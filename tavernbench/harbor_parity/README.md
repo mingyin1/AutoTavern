@@ -1,7 +1,8 @@
 # Harbor parity runs
 
 This branch adds what is needed to compare TavernBench on its original harness with the
-[Harbor adapter](https://github.com/mingyin1/adapters/tree/tavernbench-adapter/src/tavernbench) under the same conditions.
+[Harbor adapter](https://github.com/mingyin1/adapters/tree/tavernbench-adapter/src/tavernbench)
+([harbor-index/adapters#34](https://github.com/harbor-index/adapters/pull/34)) under the same conditions.
 The benchmark's tasks, labels and scorer are unchanged: every file under `tavernbench/data/` and
 `tavernbench/tavernbench/score.py` is identical to tag `v1.0.0`, the release the adapter pins.
 
