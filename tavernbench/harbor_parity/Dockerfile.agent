@@ -1,0 +1,33 @@
+# Agent image for the Harbor parity runs of TavernBench (see README.md in this directory).
+#
+# The first part of this file is the environment of the Harbor task
+# (src/tavernbench/src/tavernbench/task-template/environment/Dockerfile in the
+# adapters repository). The last step installs Claude Code with the command
+# Harbor's claude-code agent uses, at a pinned version.
+#
+#   docker build -f harbor_parity/Dockerfile.agent \
+#     --build-arg CLAUDE_CODE_VERSION=<version> -t tavernbench-agent:<version> harbor_parity
+
+FROM python:3.13-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        curl \
+        git \
+        nodejs \
+        npm \
+        procps \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+ARG CLAUDE_CODE_VERSION
+RUN test -n "${CLAUDE_CODE_VERSION}" \
+    && curl -fsSL https://downloads.claude.ai/claude-code-releases/bootstrap.sh | bash -s -- "${CLAUDE_CODE_VERSION}" \
+    && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc \
+    && export PATH="$HOME/.local/bin:$PATH" \
+    && claude --version
